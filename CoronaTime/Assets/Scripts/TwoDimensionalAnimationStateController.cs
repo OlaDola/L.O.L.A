@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TwoDimensionalAnimationStateController : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
     float maxWalkVelocity = 0.5f;
     float maxRunVelocity = 2f;
 
+    public Joystick joystick;
+    //public Button run;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,38 +28,43 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool ForwardPressed = Input.GetKey(KeyCode.W);
+        /*
+         * bool ForwardPressed = Input.GetKey(KeyCode.W);
         bool LeftPressed = Input.GetKey(KeyCode.A);
         bool RightPressed = Input.GetKey(KeyCode.D);
         bool BackwardPressed = Input.GetKey(KeyCode.S);
         bool RunPressed = Input.GetKey(KeyCode.LeftShift);
+        */
+
+        
+        float horizontal = joystick.Horizontal;
+        float vertical = joystick.Vertical;
 
         //SET VELOCITY
 
-        float currentMaxVelocity = RunPressed ? maxRunVelocity : maxWalkVelocity;
+        //float maxWalkVelocity = RunPressed ? maxRunVelocity : maxWalkVelocity;
 
         //START MOVING
 
-        //FORWARD START
-        if (ForwardPressed && velocityZ < currentMaxVelocity)
-        {
-            velocityZ += Time.deltaTime * acceleration;
-        }
+        //VERTICAL START
+        velocityZ = vertical * acceleration;
 
-        //LEFT START
-        if (LeftPressed && velocityX > -currentMaxVelocity)
+        //HORIZONTAL START
+        velocityX = horizontal * acceleration;
+
+        /*if (vertical < 0.0f && velocityX > -maxWalkVelocity)
         {
             velocityX -= Time.deltaTime * acceleration;
         }
 
         //RIGHT START
-        if (RightPressed && velocityX < currentMaxVelocity)
+        if (vertical > 0.0f && velocityX < maxWalkVelocity)
         {
             velocityX += Time.deltaTime * acceleration;
         }
 
         //BACKWARD START
-        if (BackwardPressed && velocityZ > -0.5f)
+        if (horizontal < 0.0f && velocityZ > -0.5f)
         {
             velocityZ -= Time.deltaTime * acceleration;
         }
@@ -103,58 +112,59 @@ public class TwoDimensionalAnimationStateController : MonoBehaviour
         //LOCK MOVING
 
         //RUNNING FORWARD LOCK
-        if(ForwardPressed && RunPressed && velocityZ > currentMaxVelocity)
+        if(ForwardPressed && RunPressed && velocityZ > maxWalkVelocity)
         {
-            velocityZ = currentMaxVelocity;
+            velocityZ = maxWalkVelocity;
         }
-        else if(ForwardPressed && velocityZ > currentMaxVelocity)
+        else if(ForwardPressed && velocityZ > maxWalkVelocity)
         {
             velocityZ -= Time.deltaTime * deceleration;
-            if(velocityZ > currentMaxVelocity && velocityZ < (currentMaxVelocity + 0.05f))
+            if(velocityZ > maxWalkVelocity && velocityZ < (maxWalkVelocity + 0.05f))
             {
-                velocityZ = currentMaxVelocity;
+                velocityZ = maxWalkVelocity;
             }
         }
-        else if(ForwardPressed && velocityZ < currentMaxVelocity && velocityZ > (currentMaxVelocity - 0.05f))
+        else if(ForwardPressed && velocityZ < maxWalkVelocity && velocityZ > (maxWalkVelocity - 0.05f))
         {
-            velocityZ = currentMaxVelocity;
+            velocityZ = maxWalkVelocity;
         }
 
         //RUNNING LEFT LOCK
-        if (LeftPressed && RunPressed && velocityX < -currentMaxVelocity)
+        if (LeftPressed && RunPressed && velocityX < -maxWalkVelocity)
         {
-            velocityX = -currentMaxVelocity;
+            velocityX = -maxWalkVelocity;
         }
-        else if (LeftPressed && velocityX < -currentMaxVelocity)
+        else if (LeftPressed && velocityX < -maxWalkVelocity)
         {
             velocityX += Time.deltaTime * deceleration;
-            if (velocityX < -currentMaxVelocity && velocityX > (-currentMaxVelocity - 0.05f))
+            if (velocityX < -maxWalkVelocity && velocityX > (-maxWalkVelocity - 0.05f))
             {
-                velocityX = -currentMaxVelocity;
+                velocityX = -maxWalkVelocity;
             }
         }
-        else if (LeftPressed && velocityX > currentMaxVelocity && velocityX < (-currentMaxVelocity + 0.05f))
+        else if (LeftPressed && velocityX > maxWalkVelocity && velocityX < (-maxWalkVelocity + 0.05f))
         {
-            velocityX = currentMaxVelocity;
+            velocityX = maxWalkVelocity;
         }
 
         //RUNNING RIGHT LOCK
-        if (RightPressed && RunPressed && velocityX > currentMaxVelocity)
+        if (RightPressed && RunPressed && velocityX > maxWalkVelocity)
         {
-            velocityZ = currentMaxVelocity;
+            velocityZ = maxWalkVelocity;
         }
-        else if (RightPressed && velocityX > currentMaxVelocity)
+        else if (RightPressed && velocityX > maxWalkVelocity)
         {
             velocityX -= Time.deltaTime * deceleration;
-            if (velocityX > currentMaxVelocity && velocityX < (currentMaxVelocity + 0.05f))
+            if (velocityX > maxWalkVelocity && velocityX < (maxWalkVelocity + 0.05f))
             {
-                velocityX = currentMaxVelocity;
+                velocityX = maxWalkVelocity;
             }
         }
-        else if (RightPressed && velocityX < currentMaxVelocity && velocityX > (currentMaxVelocity - 0.05f))
+        else if (RightPressed && velocityX < maxWalkVelocity && velocityX > (maxWalkVelocity - 0.05f))
         {
-            velocityX = currentMaxVelocity;
+            velocityX = maxWalkVelocity;
         }
+        */
 
         animator.SetFloat("Velocity Z", velocityZ);
         animator.SetFloat("Velocity X", velocityX);

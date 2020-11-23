@@ -8,6 +8,8 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Transform cam;
 
+    public Joystick joystick;
+
     public float speed = 0.5f;
 
     public float turnSmoothTime = 0.1f;
@@ -17,8 +19,8 @@ public class ThirdPersonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        float horizontal = joystick.Horizontal;
+        float vertical = joystick.Vertical;
 
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
